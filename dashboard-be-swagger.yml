@@ -11,7 +11,7 @@
  paths:
   /stats/tweets/credibility/absolute:
     get:
-      description: "GET the statistics for the computed tweets credibility leves for an absolute time"
+      description: "GET the statistics for the computed tweets credibility labels for an absolute time"
       parameters:
         - in: "query"
           name: "label"
@@ -31,4 +31,6 @@
             type: "string"
           required: true
           description: "Ending date"
-    /stats/tweets/accuracy:
+  /stats/tweets/accuracy:
+    get:
+      description: ""

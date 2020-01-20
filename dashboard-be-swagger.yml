@@ -1,16 +1,64 @@
  openapi: "3.0.0"
  servers:
-   - url: https://dashboard.coinform.eu/
-     description: The Coinform Dashboadr Backend API
+   - url: https://dashboard-api.coinform.eu/
+     description: The Coinform Dashboard Backend API
  info:
    description: |
      This document describes the API exposed by Co-Inform's Dashboard Backend.
      Its the single point of entrance for the Dashboard frontend
    version: "0.0.1"
    title: "CoInform Dashboard API"
- paths:
+
+tags:
+  #- name: admins
+  #  description: Secured Admin-only calls
+  - name: developers
+    description: Operations available to regular developers
+
+paths:
+  /stats/tweets/credibility/relative:
+    get:
+      tags:
+        - developers
+      summary: Get the crediblity of the analyzed tweets for a set relative timeframe
+      operationId: credibilityRelative
+      description: returns information about the number of labels assigned to queried tweets for some tweets
+      parameters:
+        - in: query
+          name: label
+          description: >-
+            The credibility label to retrieve stats for. To query more than one label multiple instances of this parameter can be passed. It is possible to also retrieve the stats for all the labels using the value ‘all’.
+          required: true
+          schema:
+            $ref: '#/components/schemas/CredLabelSelector'
+        - in: query
+          name: unit
+          description: >-
+            Unit to use for the relative time frame.
+          required: true
+          schema:
+            $ref: '#/components/schemas/TimeUnit'
+        - in: query
+          name: amount
+          description: Restricts the time units.
+          required: true
+          schema:
+            type: number
+            format: integer
+            example: 7
+      responses:
+        '200':
+          description: The stats for the Credibility label for the specified time intervalls
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelativeCredStats'
+        '400':
+          description: bad input parameter
   /stats/tweets/credibility/absolute:
     get:
+      tags:
+        - developers
       description: "GET the statistics for the computed tweets credibility labels for an absolute time"
       parameters:
         - in: "query"
@@ -33,4 +81,39 @@
           description: "Ending date"
   /stats/tweets/accuracy:
     get:
+      tags:
+        - developers
       description: ""
+
+components:
+  schemas:
+    CredLabelSelector:
+      type: string
+      enum:
+        - "credible"
+        - "mostly credible"
+        - "credibility uncertain"
+        - "mostly not credible"
+        - "not credible"
+        - "not verifiable"
+        - "all"
+      example: "credible"
+    TimeUnit:
+      type: string
+      enum:
+        - "hours"
+        - "days"
+        - "months"
+      example: "days"
+    RelativeCredStats:
+      type: object
+      properties:
+        credibility label:
+          $ref: '#/components/schemas/CredLabelSelector'
+        data:
+          type: array
+          items:
+            type: number
+            format: integer
+          example: [10, 12, 11, 9, 8, 10, 15]
+

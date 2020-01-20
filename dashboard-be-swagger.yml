@@ -1,0 +1,11 @@
+ openapi: "3.0.0"
+ servers:
+   - url: https://dashboard.coinform.eu/
+     description: The Coinform Dashboadr Backend API
+ info:
+   description: |
+     This document describes the API exposed by Co-Inform's Dashboard Backend.
+     Its the single point of entrance for the Dashboard frontend
+   version: "0.0.1"
+   title: "CoInform Dashboard API"
+ paths:

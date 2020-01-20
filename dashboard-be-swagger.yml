@@ -9,3 +9,26 @@
    version: "0.0.1"
    title: "CoInform Dashboard API"
  paths:
+  /stats/tweets/credibility/absolute:
+    get:
+      description: "GET the statistics for the computed tweets credibility leves for an absolute time"
+      parameters:
+        - in: "query"
+          name: "label"
+          schema:
+            type: "string"
+          required: true
+          description: "Label of Credibility to fetch"
+        - in: "query"
+          name: "start"
+          schema:
+            type: "string"
+          required: true
+          description: "Starting date"
+        - in: "query"
+          name: "end"
+          schema:
+            type: "string"
+          required: true
+          description: "Ending date"
+    /stats/tweets/accuracy:

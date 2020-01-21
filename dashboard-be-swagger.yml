@@ -1,13 +1,13 @@
 openapi: "3.0.0"
- servers:
+servers:
    - url: https://dashboard-api.coinform.eu/
      description: The Coinform Dashboard Backend API
- info:
-   description: |
+info:
+  description: |
      This document describes the API exposed by Co-Inform's Dashboard Backend.
      Its the single point of entrance for the Dashboard frontend
-   version: "0.0.1"
-   title: "CoInform Dashboard API"
+  version: "0.0.1"
+  title: "CoInform Dashboard API"
 
 tags:
   #- name: admins
@@ -79,11 +79,25 @@ paths:
             type: "string"
           required: true
           description: "Ending date"
+      responses:
+        200:
+          description: "The stats for the absolute timeperiod"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbsoluteCredStats"
+        400:
+          description: "Bad input parameter"
   /stats/tweets/accuracy:
     get:
       tags:
         - developers
       description: ""
+      responses:
+        200:
+          description: "Great Success"
+        400:
+          description: "Not so great success"
 
 components:
   schemas:
@@ -110,6 +124,17 @@ components:
       properties:
         credibility label:
           $ref: '#/components/schemas/CredLabelSelector'
+        data:
+          type: array
+          items:
+            type: number
+            format: integer
+          example: [10, 12, 11, 9, 8, 10, 15]
+    AbsoluteCredStats:
+      type: object
+      properties:
+        credibility label:
+          $ref: "#/components/schemas/CredLabelSelector"
         data:
           type: array
           items:
